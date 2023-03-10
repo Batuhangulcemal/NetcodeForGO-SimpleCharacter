@@ -17,9 +17,19 @@ public class Player : NetworkBehaviour
 
         if (IsLocalPlayer)
         {
-            PlayerController.Instance.SetLocalPlayer(this);
+            PlayerController.Instance.AttachPlayer(this);
+            gameObject.name = "LocalPlayer";
+        }   
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (IsLocalPlayer)
+        {
+            PlayerController.Instance.DetachPlayer();
         }
-        
     }
 
 

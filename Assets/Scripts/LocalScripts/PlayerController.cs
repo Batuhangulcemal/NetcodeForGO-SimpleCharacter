@@ -4,16 +4,27 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
-    [SerializeField] Player player;
+    [SerializeField] public Player player;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void SetLocalPlayer(Player _player)
+    public void AttachPlayer(Player _player)
     {
         player = _player;
-        _player.gameObject.name = "LocalPlayer";
+        transform.SetParent(player.transform, false);
+
+        GetComponent<PlayerAnimation>().enabled = true;
+    }
+
+    public void DetachPlayer()
+    {
+        GetComponent<PlayerAnimation>().enabled = false;
+
+        player = null;
+        transform.SetParent(null);
+
     }
 }
