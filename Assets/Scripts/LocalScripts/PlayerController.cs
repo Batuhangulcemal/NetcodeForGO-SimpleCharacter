@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     [SerializeField] public Player player;
-    [SerializeField] public CinemachineFreeLook CMcamera;
+    [SerializeField] public CinemachineFreeLook TpsCamera;
     [SerializeField] public Transform HeadTransform;
+
+    [SerializeField] public CameraController CameraController;
 
     private void Awake()
     {
@@ -20,8 +22,10 @@ public class PlayerController : MonoBehaviour
         player = _player;
         transform.SetParent(player.transform, false);
 
-        CMcamera.Follow = HeadTransform;
-        CMcamera.LookAt = HeadTransform;
+        TpsCamera.Follow = transform;
+        TpsCamera.LookAt = HeadTransform;
+
+        CameraController.SwitchCamera(CameraLocation.TPS);
 
         GetComponent<PlayerAnimation>().enabled = true;
 

@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Run",
+                    "type": "Value",
+                    "id": "95e3a150-7f3d-48cd-a4e9-50297331fd96",
+                    "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -125,6 +134,17 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "274a3bb7-b5e6-43af-ab2a-1726e9e0853f",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

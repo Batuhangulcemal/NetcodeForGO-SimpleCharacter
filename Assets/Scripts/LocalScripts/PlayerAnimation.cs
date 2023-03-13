@@ -13,6 +13,10 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private Vector3 moveDirection;
     [SerializeField] private float turnSpeed;
 
+    [SerializeField] private float run;
+
+    private Transform cam;
+
     private void OnEnable()
     {
         Debug.Log(GetComponent<PlayerController>().player.gameObject.name);
@@ -21,6 +25,7 @@ public class PlayerAnimation : MonoBehaviour
         playerControls.Enable();
         animator = transform.parent.GetComponent<Animator>();
         animator.applyRootMotion = true;
+        cam = Camera.main.transform;
     }
 
     private void Update()
@@ -34,21 +39,24 @@ public class PlayerAnimation : MonoBehaviour
     private void GetInput()
     {
         Vector2 vector2d = playerControls.Player.Movement.ReadValue<Vector2>();
+        run = playerControls.Player.Run.ReadValue<float>();
         moveDirection = new Vector3(vector2d.x, 0, vector2d.y);
     }
 
     private void Animate()
     {
-        animator.SetFloat("Speed", moveDirection.magnitude, 0.05f, Time.deltaTime);
+        animator.SetFloat("Speed", moveDirection.magnitude, 0.1f, Time.deltaTime);
+        animator.SetFloat("Run", run, 0.1f, Time.deltaTime);
     }
 
     private void Rotate()
     {
         if (moveDirection == Vector3.zero) return;
 
-        Quaternion lookRotatation = Quaternion.LookRotation(moveDirection);
+        Vector3 camRot = cam.transform.TransformDirection(moveDirection);
+        camRot.y = 0;
 
-        transform.parent.rotation = Quaternion.Slerp(transform.parent.rotation, lookRotatation, Time.deltaTime * turnSpeed);
+        transform.parent.forward = Vector3.Slerp(transform.parent.forward, camRot, turnSpeed * Time.deltaTime);
 
     }
 }
