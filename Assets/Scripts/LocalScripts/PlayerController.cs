@@ -7,9 +7,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     [SerializeField] public Player player;
-    [SerializeField] public CinemachineFreeLook TpsCamera;
-    [SerializeField] public Transform HeadTransform;
-
     [SerializeField] public CameraController CameraController;
 
     private void Awake()
@@ -22,8 +19,6 @@ public class PlayerController : MonoBehaviour
         player = _player;
         transform.SetParent(player.transform, false);
 
-        TpsCamera.Follow = transform;
-        TpsCamera.LookAt = HeadTransform;
 
         CameraController.SwitchCamera(CameraLocation.TPS);
 
