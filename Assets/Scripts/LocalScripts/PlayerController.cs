@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         player = _player;
         transform.SetParent(player.transform, false);
+        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
 
         CameraController.SwitchCamera(CameraLocation.TPS);

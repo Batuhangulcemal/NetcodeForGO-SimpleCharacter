@@ -48,7 +48,7 @@ public class PlayerAnimation : MonoBehaviour
     private void Animate()
     {
         animator.SetFloat("Speed", moveDirection.magnitude, 0.1f, Time.deltaTime);
-        animator.SetFloat("Run", run, 0.1f, Time.deltaTime);
+        animator.SetFloat("Run", run, 1f, Time.deltaTime);
     }
 
     private void Rotate()
