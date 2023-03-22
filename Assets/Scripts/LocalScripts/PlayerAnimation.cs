@@ -26,8 +26,8 @@ public class PlayerAnimation : MonoBehaviour
         animator = transform.parent.GetComponent<Animator>();
         animator.applyRootMotion = true;
         cam = Camera.main.transform;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     private void Update()

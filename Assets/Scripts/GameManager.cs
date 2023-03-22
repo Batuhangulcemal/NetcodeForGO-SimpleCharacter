@@ -5,21 +5,40 @@ using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using BestHTTP;
 using System;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
+    public static GameManager Instance;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     private void Start()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += Singleton_OnClientConnectedCallback;
 #if UNITY_SERVER
-        Debug.Log("ServerStarted");
-        NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = "193.140.7.178";
-        NetworkManager.Singleton.StartServer();
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 30;
-        Debug.Log(Application.targetFrameRate);
-        CreateOrUpdateStatus();
+        ConfigureServer();
 #endif
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsServer)
+        {
+            //NetworkManager.SceneManager.LoadScene("OtherScene", LoadSceneMode.Single);
+        }
     }
 
     private void Singleton_OnClientConnectedCallback(ulong obj)
@@ -27,31 +46,23 @@ public class GameManager : MonoBehaviour
         //Debug.Log("clientConnected");
     }
 
-    //should refactor
-    private void CreateOrUpdateStatus()
+    private void ConfigureServer()
     {
-        string serverName = "server-7771";
-        string userCount = "31";
-        string maxUserCapacity = "60";
-        string up = "true";
-        string full = "false";
-        string json = $"{{\"serverName\":\"{serverName}\",\"userCount\":\"{userCount}\",\"maxUserCapacity\":\"{maxUserCapacity}\",\"up\":\"{up}\",\"full\":\"{full}\"}}";
-
-        var request = new HTTPRequest(new Uri("http://193.140.7.178:7769/api/status/update"), HTTPMethods.Post, OnCreateOrUpdateFinished);
-
-        request.SetHeader("Content-Type", "application/json; charset=UTF-8");
-        request.RawData = System.Text.Encoding.UTF8.GetBytes(json);
-
-        request.Send();
+        Debug.Log("ServerStarted");
+        NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = "193.140.7.178";
+        NetworkManager.Singleton.StartServer();
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+        Debug.Log(Application.targetFrameRate);
     }
 
-    private void OnCreateOrUpdateFinished(HTTPRequest originalRequest, HTTPResponse response)
+    public void ClientChangeScene(int sceneNumber)
     {
-        if (response.StatusCode != 200)
-        {
-            Debug.Log("CreateStatus Failed");
-        }
+        NetworkManager.SceneManager.LoadScene("OtherScene", LoadSceneMode.Single);
+
+        //SceneManager.LoadScene(sceneNumber);
     }
+
 
 
 }

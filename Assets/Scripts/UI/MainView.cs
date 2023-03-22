@@ -14,7 +14,7 @@ public class MainView : MonoBehaviour
     [SerializeField] private Button serverButton;
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
-    [SerializeField] private Button refreshPlayersButton;
+    [SerializeField] private Button changeSceneButton;
     [SerializeField] private Button debugTextResetButton;
 
     [SerializeField] private Button changeIpButton;
@@ -46,7 +46,7 @@ public class MainView : MonoBehaviour
         serverButton.onClick.AddListener(() => ServerButtonPressed());
         hostButton.onClick.AddListener(() => HostButtonPressed());
         clientButton.onClick.AddListener(() => ClientButtonPressed());
-        refreshPlayersButton.onClick.AddListener(() => RefreshPlayersButtonPressed());
+        changeSceneButton.onClick.AddListener(() => ChangeSceneButtonPressed());
         debugTextResetButton.onClick.AddListener(() => debugText.text = string.Empty);
 
         changeIpButton.onClick.AddListener(() => ChangeIpButtonPressed());
@@ -58,6 +58,8 @@ public class MainView : MonoBehaviour
 
 
     }
+
+
 
     private void Application_logMessageReceived(string condition, string stackTrace, LogType type)
     { 
@@ -89,23 +91,17 @@ public class MainView : MonoBehaviour
 
     }
 
-
-
     private void ClientButtonPressed()
     {
         NetworkManager.Singleton.StartClient();
     }
 
-
-    private void RefreshPlayersButtonPressed()
+    private void ChangeSceneButtonPressed()
     {
-        try
-        {
-            PlayerManager.Instance.RefreshPlayerListServerRpc();
-        }catch(Exception ex)
-        {
-            debugText.text = ex.Message;
-        }
+        if (!NetworkManager.Singleton.IsServer) return;
+
+        Debug.Log("asd");
+        GameManager.Instance.ClientChangeScene(1);
     }
 
     private void ChangeIpButtonPressed()
